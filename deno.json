@@ -1,0 +1,8 @@
+{
+    "tasks": {
+        "compile": "deno compile --allow-read main.ts"
+    },
+    "fmt": {
+        "indentWidth": 4
+    }
+}
