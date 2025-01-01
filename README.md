@@ -31,3 +31,10 @@ run:
 
 [bf]: https://en.wikipedia.org/wiki/Brainfuck
 [deno]: https://deno.com/
+
+> [!NOTE]
+> If you don't want to compile it, just run:
+>
+> ```sh
+> deno run --allow-read main.ts examples/hello_world.bf
+> ```
