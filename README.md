@@ -10,8 +10,8 @@ A [Brainfuck][bf] interpreter written in TypeScript and Deno.
 
 ## Build from source
 
-You need [Deno][deno] to compile TypeScript into an executable. If you don't
-have it, install it.
+You need [Deno][deno] to run or compile TypeScript into an executable. If you
+don't have it, install it.
 
 Then clone this repo and execute the following:
 

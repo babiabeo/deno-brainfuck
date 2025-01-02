@@ -1,5 +1,6 @@
 const CELLS = 30000;
 
+// deno-fmt-ignore
 enum OP {
     INC_VAL = 0x2B, // +
     DEC_VAL = 0x2D, // -
@@ -7,8 +8,8 @@ enum OP {
     DEC_PTR = 0x3C, // <
     JMP_FWD = 0x5B, // [
     JMP_BWD = 0x5D, // ]
-    OUTPUT = 0x2E, // .
-    INPUT = 0x2C, // ,
+    OUTPUT  = 0x2E, // .
+    INPUT   = 0x2C, // ,
 }
 
 interface Instruction {
@@ -35,13 +36,13 @@ function lexer(buf: Uint8Array): Instruction[] {
                 program.push({ op: OP.JMP_FWD });
                 break;
             case OP.JMP_BWD: {
-                const start = jumps.pop();
-                if (start === undefined) {
+                const matching = jumps.pop();
+                if (matching === undefined) {
                     throw new SyntaxError("Unmatching '[' command");
                 }
 
-                program[start].matching = program.length;
-                program.push({ op: OP.JMP_BWD, matching: start });
+                program[matching].matching = program.length;
+                program.push({ op: OP.JMP_BWD, matching });
                 break;
             }
         }
@@ -61,23 +62,23 @@ async function execute(program: Instruction[]) {
     for (let i = 0; i < program.length; ++i) {
         switch (program[i].op) {
             case OP.INC_VAL:
-                data[ptr]++;
+                ++data[ptr];
                 break;
             case OP.DEC_VAL:
-                data[ptr]--;
+                --data[ptr];
                 break;
             case OP.INC_PTR: {
                 if (ptr === CELLS) {
                     throw new Error("Overflowed");
                 }
-                ptr++;
+                ++ptr;
                 break;
             }
             case OP.DEC_PTR: {
                 if (ptr < 0) {
                     throw new Error("Overflowed");
                 }
-                ptr--;
+                --ptr;
                 break;
             }
             case OP.JMP_FWD: {
@@ -92,7 +93,8 @@ async function execute(program: Instruction[]) {
                 break;
             }
             case OP.OUTPUT: {
-                const out = new Uint8Array([data[ptr]]);
+                const out = new Uint8Array(1);
+                out[0] = data[ptr];
                 await Deno.stdout.write(out);
                 break;
             }
